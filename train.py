@@ -2,8 +2,6 @@ import numpy as np
 from visualization import *
 from cube import *
 import time
-import sys
-
 
 # so we can run one agent first
 def updateAgent(agent, learn_func):
