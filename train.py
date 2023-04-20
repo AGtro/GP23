@@ -31,10 +31,10 @@ def train(cube, learn_func):
     goal_reached = 0
     for i in range(iterations):
         for agent in agents:
-            time.sleep(.05)
-            rate(60)
+            # time.sleep(.05)
+            # rate(60)
             updateAgent(agents[agent], learn_func)
-            cube.draw_agents(agents.values())
+            # cube.draw_agents(agents.values())
             if checkTerminalState():
                 goal_reached += 1
                 initializeCube()
@@ -102,8 +102,9 @@ def trainForPolicy(func, learn_func):
     addAgentRewards(agents['x'])
     addAgentRewards(agents['y'])
 
-    visual = cube_visualized(3, 1, list(agents.values()))
-    visual.draw_cubes(pickups, dropoffs, risks)
+    visual = cube_visualized(3, 1)
+    # visual.add_agents(list(agents.values()))
+    # visual.draw_cubes(pickups, dropoffs, risks)
 
     print('train results')
     print('Goals: ', train(visual, learn_func))
@@ -121,11 +122,13 @@ def trainForPolicy(func, learn_func):
         print('     x: ', agents['x'].path)
         print('     y: ', agents['y'].path)
     print()
-    visual.invisible(agents.values())
+    
+    visual.generate_heatmap(agents['x'].frequencyTable, iterations)
+    # visual.invisible(agents.values())
 
 
-trainForPolicy(PRANDOM, q_learn)
+# trainForPolicy(PRANDOM, q_learn)
 trainForPolicy(PEXPLOIT, q_learn)
-trainForPolicy(PGREEDY, q_learn)
+# trainForPolicy(PGREEDY, q_learn)
 
-done()
+# done()
