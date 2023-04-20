@@ -6,6 +6,22 @@ from vpython.no_notebook import *
 import os
 import signal
 
+def get_color(iterations, frequency):
+    if frequency < iterations/1000:
+        return 0
+    elif frequency < iterations/500:
+        return 1        
+    elif frequency < iterations/400:
+        return 2        
+    elif frequency < iterations/300:
+        return 3        
+    elif frequency < iterations/200:
+        return 4        
+    elif frequency < iterations/100:
+        return 5        
+    else:
+        return 6        
+
 class cube_visualized():
     def __init__(self, grid, cube, agents_array):
         self.grid_size = grid
@@ -22,7 +38,21 @@ class cube_visualized():
     def add_box(self, agent):
         agent.box = box(pos=vector((agent.position[0]-1)+self.cube_size/2, (agent.position[2]-1)+self.cube_size/2, (self.grid_size-agent.position[1])+self.cube_size/2), 
             size=vector(self.cube_size*.25, self.cube_size*.5, self.cube_size*.25), color=color.white, opacity=1, emissive=True, make_trail=True, retain=10)
-           
+
+    def generate_heatmap(self, frequencies, iterations):
+        colors = [vector(0,1,0), vector(.2,1,0), vector(.5,.80,0), vector(0.75,.50,0), vector(.75,.25,0), vector(1,.50,0), vector(1,0,0)]
+        for x in range(self.grid_size):
+            for y in range(self.grid_size):
+                for z in range(self.grid_size):
+                    color_val = colors[get_color(iterations, frequencies[x,z,self.cube_size-(y+1)])]
+                    self.cubes[x,y,z] = box(pos=vector(x+self.cube_size/2, (y+self.cube_size/2)*1.5, z+self.cube_size/2), 
+                        size=vector(self.cube_size, self.cube_size, self.cube_size),
+                        color = color_val,
+                        opacity = .5, emissive = True)
+        
+        scene.center = vector(self.grid_size/2, (self.grid_size/2)*1.5, self.grid_size/2)
+
+    
     def draw_cubes(self, pickups, dropoffs, risks):
         for x in range(self.grid_size):
             for y in range(self.grid_size):
@@ -66,3 +96,4 @@ def done():
 
 # agents['x'].position = (3, 3, 3)
 # cube.draw_agents(agents.values())
+# (iterations/2)/((iterations/2)-frequencies[x,z,self.cube_size-(y+1)])
