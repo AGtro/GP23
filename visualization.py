@@ -23,18 +23,19 @@ def get_color(iterations, frequency):
         return 6        
 
 class cube_visualized():
-    def __init__(self, grid, cube, agents_array):
+    def __init__(self, grid, cube):
         self.grid_size = grid
         self.cube_size = cube
         self.cubes = np.empty((grid, grid, grid), dtype=object)
-        
+    
+    def add_agents(self, agents_array):
         for agent in agents_array:
             self.add_box(agent)
         agents_array[0].box.color = color.purple
         agents_array[0].box.trail_color = color.purple
         agents_array[1].box.color = color.blue
         agents_array[1].box.trail_color = color.blue
-    
+
     def add_box(self, agent):
         agent.box = box(pos=vector((agent.position[0]-1)+self.cube_size/2, (agent.position[2]-1)+self.cube_size/2, (self.grid_size-agent.position[1])+self.cube_size/2), 
             size=vector(self.cube_size*.25, self.cube_size*.5, self.cube_size*.25), color=color.white, opacity=1, emissive=True, make_trail=True, retain=10)
