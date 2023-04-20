@@ -251,16 +251,23 @@ def getMove(old_position, new_position):
     return east_west, north_south, up_down
 
 
-def updateQTable(agent, old_position, reward):
+def updateQTable(agent, old_position, reward, learn_func):
     action = getMove(old_position, agent.position)
     position_index = list(cube.keys()).index(agent.position)
     old_position_index = list(cube.keys()).index(old_position)
     action_index = list(agent.actions).index(action)
+    learn_func(agent, old_position_index, position_index, action_index, reward)
 
+
+def sarsa_q_learn(agent, old_position_index, position_index, action_index, reward):
     agent.q_table[old_position_index][action_index] = agent.q_table[old_position_index][action_index] + alpha * \
                                                       (reward + gamma * max(agent.q_table[position_index]) -
                                                        agent.q_table[old_position_index][action_index])
 
+
+def q_learn(agent, old_position_index, position_index, action_index, reward):
+    agent.q_table[old_position_index][action_index] = (1 - alpha) * agent.q_table[old_position_index][action_index] + \
+                                                      alpha * (reward + gamma * max(agent.q_table[position_index]))
 
 def checkTerminalState():
     num_dropoffs_full = 0
