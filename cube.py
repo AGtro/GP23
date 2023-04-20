@@ -251,14 +251,11 @@ def getMove(old_position, new_position):
     return east_west, north_south, up_down
 
 
-def updateQTable(agent, old_position):
+def updateQTable(agent, old_position, reward):
     action = getMove(old_position, agent.position)
     position_index = list(cube.keys()).index(agent.position)
     old_position_index = list(cube.keys()).index(old_position)
     action_index = list(agent.actions).index(action)
-    action_result = perform_cell_action(agent.carrying_block, agent.position)  # x.q_table[:-1] as arg 2
-    agent.carrying_block = action_result[0]
-    reward = action_result[1]
 
     agent.q_table[old_position_index][action_index] = agent.q_table[old_position_index][action_index] + alpha * \
                                                       (reward + gamma * max(agent.q_table[position_index]) -

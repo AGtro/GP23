@@ -1,6 +1,8 @@
 import numpy as np
-
+from visualization import *
 from cube import *
+import time
+import sys
 
 
 # so we can run one agent first
@@ -22,12 +24,15 @@ def updateAgent(agent):
 iterations = 5000
 
 
-def train():
+def train(cube):
     # for loop for num of iterations?
     goal_reached = 0
     for i in range(iterations):
         for agent in agents:
+            time.sleep(.05)
+            rate(60)
             updateAgent(agents[agent])
+            cube.draw_agents(agents.values())
             if checkTerminalState():
                 goal_reached += 1
                 initializeCube()
@@ -89,13 +94,17 @@ def trainForPolicy(func):
     agents.clear()
     initializeCube()
     makeAgent('x', (1, 1, 1), func)
-    makeAgent('y', (3, 2, 3), func)
+    makeAgent('y', (2, 3, 3), func)
     addPositionFrequency(agents['x'])
     addPositionFrequency(agents['y'])
     addAgentRewards(agents['x'])
     addAgentRewards(agents['y'])
+
+    visual = cube_visualized(3, 1, list(agents.values()))
+    visual.draw_cubes(pickups, dropoffs, risks)
+
     print('train results')
-    print('Goals: ', train())
+    print('Goals: ', train(visual))
     for agent in agents:
         print(agent)
         print('Rewards:', agents[agent].rewards)
@@ -110,8 +119,11 @@ def trainForPolicy(func):
         print('     x: ', agents['x'].path)
         print('     y: ', agents['y'].path)
     print()
+    visual.invisible(agents.values())
 
 
 trainForPolicy(PRANDOM)
 trainForPolicy(PEXPLOIT)
 trainForPolicy(PGREEDY)
+
+done()
