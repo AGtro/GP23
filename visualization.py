@@ -7,7 +7,7 @@ import os
 import signal
 
 def get_color(iterations, frequency):
-    if frequency < iterations/1000:
+    if frequency < iterations/600:
         return 0
     elif frequency < iterations/500:
         return 1        
@@ -15,9 +15,9 @@ def get_color(iterations, frequency):
         return 2        
     elif frequency < iterations/300:
         return 3        
-    elif frequency < iterations/200:
+    elif frequency < iterations/150:
         return 4        
-    elif frequency < iterations/100:
+    elif frequency < iterations/40:
         return 5        
     else:
         return 6        
@@ -41,7 +41,7 @@ class cube_visualized():
             size=vector(self.cube_size*.25, self.cube_size*.5, self.cube_size*.25), color=color.white, opacity=1, emissive=True, make_trail=True, retain=10)
 
     def generate_heatmap(self, frequencies, iterations):
-        colors = [vector(0,1,0), vector(.2,1,0), vector(.5,.80,0), vector(0.75,.50,0), vector(.75,.25,0), vector(1,.50,0), vector(1,0,0)]
+        colors = [vector(0,1,0), vector(.2,1,0), vector(.5,1,0), vector(1,1,0), vector(1,.7,0), vector(1,.5,0), vector(1,0,0)]
         for x in range(self.grid_size):
             for y in range(self.grid_size):
                 for z in range(self.grid_size):
